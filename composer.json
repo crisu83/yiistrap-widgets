@@ -1,0 +1,72 @@
+{
+    "name": "crisu83/yiistrap-widgets",
+    "description": "Extension library for Yiistrap.",
+    "keywords": ["yiistrap", "widgets", "bootstrap", "yii"],
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Christoffer Niska",
+            "email": "christoffer.niska@gmail.com",
+            "homepage": "http://www.cniska.net/"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "ivaynberg/select2",
+                "version": "3.4.3",
+                "dist": {
+                    "url": "https://github.com/ivaynberg/select2/archive/3.4.3.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "jhollingworth/bootstrap-wysihtml5",
+                "version": "dev-master",
+                "dist": {
+                    "url": "https://github.com/jhollingworth/bootstrap-wysihtml5/archive/master.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "smalot/bootstrap-datetimepicker",
+                "version": "dev-master",
+                "dist": {
+                    "url": "https://github.com/smalot/bootstrap-datetimepicker/archive/master.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "blueimp/jquery-file-upload",
+                "version": "8.8.5",
+                "dist": {
+                    "url": "https://github.com/blueimp/jQuery-File-Upload/archive/8.8.5.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "require-dev": {
+        "yiisoft/yii": ">=1.1.14"
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "crisu83/yiistrap": ">=1.1.1",
+        "blueimp/jquery-file-upload": "8.8.5",
+        "ivaynberg/select2": "3.4.3",
+        "jhollingworth/bootstrap-wysihtml5": "dev-master",
+        "smalot/bootstrap-datetimepicker": "dev-master"
+    },
+    "minimum-stability": "dev"
+}
