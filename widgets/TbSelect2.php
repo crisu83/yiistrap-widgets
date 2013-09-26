@@ -1,6 +1,6 @@
 <?php
 /**
- * BootstrapSelect2 class file.
+ * TbSelect2 class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -18,7 +18,7 @@
  * @method boolean registerEvents($selector, $events, $position = CClientScript::POS_END)
  * @method CClientScript getClientScript()
  */
-class BootstrapSelect2 extends CInputWidget
+class TbSelect2 extends CInputWidget
 {
     /**
      * @var array raw data (key=>value).
@@ -66,7 +66,7 @@ class BootstrapSelect2 extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $id = $this->resolveId();
-        echo TbHtml::openTag('div', array('class' => 'dovre-select2'));
+        echo TbHtml::openTag('div', array('class' => 'select2'));
         if ($this->hasModel()) {
             if ($this->asDropDownList) {
                 echo TbHtml::activeDropDownList($this->model, $this->attribute, $this->data, $this->htmlOptions);

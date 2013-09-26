@@ -1,6 +1,6 @@
 <?php
 /**
- * BootstrapWysihtml5 class file.
+ * TbJqueryFileUpload class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -18,17 +18,22 @@
  * @method boolean registerEvents($selector, $events, $position = CClientScript::POS_END)
  * @method CClientScript getClientScript()
  */
-class BootstrapWysihtml5 extends CInputWidget
+class TbJqueryFileUpload extends CInputWidget
 {
     /**
-     * @var integer width of the text area (in pixels).
+     * @var string the button label text.
      */
-    public $width = 800;
+    public $label = 'Select file';
 
     /**
-     * @var integer height of the text area (in pixels).
+     * @var mixed url to call with ajax when a file is uploaded.
      */
-    public $height = 300;
+    public $url;
+
+    /**
+     * @var array HTML attributes for the button element.
+     */
+    public $buttonOptions = array();
 
     /**
      * @var array initial options that should be passed to the plugin.
@@ -46,12 +51,16 @@ class BootstrapWysihtml5 extends CInputWidget
     public function init()
     {
         parent::init();
+        if (!isset($this->url)) {
+            throw new CException('You must specify an url property.');
+        }
         Yii::import('bootstrap.behaviors.TbWidget');
         $this->attachBehavior('tbWidget', new TbWidget);
         if (!isset($this->assetPath)) {
-            $this->assetPath = Yii::getPathOfAlias('vendor.jhollingworth.bootstrap-wysihtml5');
+            $this->assetPath = Yii::getPathOfAlias('vendor.blueimp.jquery-file-upload');
         }
-        TbHtml::addCssStyle('width: ' . $this->width . 'px; height: ' . $this->height . 'px;', $this->htmlOptions);
+        TbHtml::addCssClass('fileinput-button', $this->buttonOptions);
+        TbArray::defaultValue('dataType', 'json', $this->options);
     }
 
     /**
@@ -61,20 +70,27 @@ class BootstrapWysihtml5 extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $this->resolveId($id);
-        if (isset($this->htmlOptions['name'])) {
-            $name = $this->htmlOptions['name'];
-        }
         if ($this->hasModel()) {
-            echo CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
+            $input = TbHtml::activeFileField($this->model, $this->attribute, $this->htmlOptions);
         } else {
-            echo CHtml::textArea($name, $this->value, $this->htmlOptions);
+            $input = TbHtml::fileField($name, $this->value, $this->htmlOptions);
         }
+        echo TbHtml::button($this->label . ' ' . $input, $this->buttonOptions);
+        $this->options['url'] = $this->url;
         $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
         $cs = $this->getClientScript();
+        $cs->registerCoreScript('jquery');
         $this->publishAssets($this->assetPath);
-        $this->registerCssFile('dist/bootstrap-wysihtml5-0.0.2.css');
-        $this->registerScriptFile('lib/js/wysihtml5-0.3.0.js', CClientScript::POS_HEAD);
-        $this->registerScriptFile('dist/bootstrap-wysihtml5-0.0.2.min.js', CClientScript::POS_HEAD);
-        $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').wysihtml5({$options});");
+        $this->registerCssFile('css/jquery.fileupload-ui.css');
+        $this->registerScriptFile('js/vendor/jquery.ui.widget.js', CClientScript::POS_HEAD);
+        $this->registerScriptFile('js/jquery.iframe-transport.js', CClientScript::POS_HEAD);
+        $this->registerScriptFile('js/jquery.fileupload.js', CClientScript::POS_HEAD);
+        $script = <<<EOD
+jQuery('#{$id}')
+    .fileupload({$options})
+    .prop('disabled', !jQuery.support.fileInput)
+    .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
+EOD;
+        $cs->registerScript(__CLASS__ . '#' . $id, $script);
     }
-}
+} 
