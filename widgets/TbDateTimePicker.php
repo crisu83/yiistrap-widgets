@@ -1,6 +1,6 @@
 <?php
 /**
- * BootstrapDateTimePicker class file.
+ * TbDateTimePicker class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
@@ -18,7 +18,7 @@
  * @method boolean registerEvents($selector, $events, $position = CClientScript::POS_END)
  * @method CClientScript getClientScript()
  */
-class BootstrapDateTimePicker extends CInputWidget
+class TbDateTimePicker extends CInputWidget
 {
     /**
      * @var array initial options that should be passed to the plugin.
