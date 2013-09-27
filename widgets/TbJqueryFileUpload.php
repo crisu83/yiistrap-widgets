@@ -59,6 +59,9 @@ class TbJqueryFileUpload extends CInputWidget
         if (!isset($this->assetPath)) {
             $this->assetPath = Yii::getPathOfAlias('vendor.blueimp.jquery-file-upload');
         }
+        if (!isset($this->buttonOptions['class'])) {
+            TbHtml::addCssClass('btn btn-primary', $this->htmlOptions);
+        }
         TbHtml::addCssClass('fileinput-button', $this->buttonOptions);
         TbArray::defaultValue('dataType', 'json', $this->options);
     }
@@ -75,7 +78,7 @@ class TbJqueryFileUpload extends CInputWidget
         } else {
             $input = TbHtml::fileField($name, $this->value, $this->htmlOptions);
         }
-        echo TbHtml::button($this->label . ' ' . $input, $this->buttonOptions);
+        echo TbHtml::tag('span', $this->buttonOptions, $this->label . ' ' . $input);
         $this->options['url'] = $this->url;
         $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
         $cs = $this->getClientScript();
