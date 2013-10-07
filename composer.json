@@ -20,6 +20,11 @@
                 "dist": {
                     "url": "https://github.com/ivaynberg/select2/archive/3.4.3.zip",
                     "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/ivaynberg/select2",
+                    "type": "git",
+                    "reference": "tags/3.4.3"
                 }
             }
         },
@@ -31,6 +36,11 @@
                 "dist": {
                     "url": "https://github.com/jhollingworth/bootstrap-wysihtml5/archive/master.zip",
                     "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/jhollingworth/bootstrap-wysihtml5",
+                    "type": "git",
+                    "reference": "branches/master"
                 }
             }
         },
@@ -42,6 +52,11 @@
                 "dist": {
                     "url": "https://github.com/smalot/bootstrap-datetimepicker/archive/master.zip",
                     "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/smalot/bootstrap-datetimepicker",
+                    "type": "git",
+                    "reference": "branches/master"
                 }
             }
         },
@@ -53,6 +68,11 @@
                 "dist": {
                     "url": "https://github.com/blueimp/jQuery-File-Upload/archive/8.8.5.zip",
                     "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/blueimp/jQuery-File-Upload",
+                    "type": "git",
+                    "reference": "tags/8.8.5"
                 }
             }
         }
