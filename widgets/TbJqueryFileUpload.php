@@ -36,9 +36,9 @@ class TbJqueryFileUpload extends CInputWidget
     public $buttonOptions = array();
 
     /**
-     * @var array initial options that should be passed to the plugin.
+     * @var array options that are passed to the plugin.
      */
-    public $options = array();
+    public $pluginOptions = array();
 
     /**
      * @var string path to widget assets.
@@ -46,9 +46,9 @@ class TbJqueryFileUpload extends CInputWidget
     public $assetPath;
 
     /**
-     * @var bool whether to register scripts through the client script component.
+     * @var bool whether to bind the plugin to the associated dom element.
      */
-    public $registerScripts = true;
+    public $bindPlugin = true;
 
     /**
      * Initializes the widget.
@@ -68,7 +68,7 @@ class TbJqueryFileUpload extends CInputWidget
             TbHtml::addCssClass('btn btn-primary', $this->htmlOptions);
         }
         TbHtml::addCssClass('fileinput-button', $this->buttonOptions);
-        TbArray::defaultValue('dataType', 'json', $this->options);
+        TbArray::defaultValue('dataType', 'json', $this->pluginOptions);
     }
 
     /**
@@ -78,16 +78,21 @@ class TbJqueryFileUpload extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $this->resolveId($id);
+
+        $this->pluginOptions['url'] = $this->url;
+        if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
+        }
+
         if ($this->hasModel()) {
             $input = TbHtml::activeFileField($this->model, $this->attribute, $this->htmlOptions);
         } else {
             $input = TbHtml::fileField($name, $this->value, $this->htmlOptions);
         }
         echo TbHtml::tag('span', $this->buttonOptions, $this->label . ' ' . $input);
-        $this->options['url'] = $this->url;
 
-        if ($this->registerScripts) {
-            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+        if ($this->assetPath !== false) {
+            $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
             $cs = $this->getClientScript();
             $cs->registerCoreScript('jquery');
             $this->publishAssets($this->assetPath);
@@ -95,13 +100,16 @@ class TbJqueryFileUpload extends CInputWidget
             $this->registerScriptFile('js/vendor/jquery.ui.widget.js', CClientScript::POS_HEAD);
             $this->registerScriptFile('js/jquery.iframe-transport.js', CClientScript::POS_HEAD);
             $this->registerScriptFile('js/jquery.fileupload.js', CClientScript::POS_HEAD);
-            $script = <<<EOD
-    jQuery('#{$id}')
-        .fileupload({$options})
-        .prop('disabled', !jQuery.support.fileInput)
-        .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
+
+            if ($this->bindPlugin) {
+                $script = <<<EOD
+jQuery('#{$id}')
+    .fileupload({$options})
+    .prop('disabled', !jQuery.support.fileInput)
+    .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
 EOD;
-            $cs->registerScript(__CLASS__ . '#' . $id, $script);
+                $cs->registerScript(__CLASS__ . '#' . $id, $script);
+            }
         }
     }
 } 

@@ -31,9 +31,9 @@ class TbSelect2 extends CInputWidget
     public $asDropDownList = true;
 
     /**
-     * @var array initial options that should be passed to the plugin.
+     * @var array options that are passed to the plugin.
      */
-    public $options = array();
+    public $pluginOptions = array();
 
     /**
      * @var string path to widget assets.
@@ -41,9 +41,9 @@ class TbSelect2 extends CInputWidget
     public $assetPath;
 
     /**
-     * @var bool whether to register scripts through the client script component.
+     * @var bool whether to bind the plugin to the associated dom element.
      */
-    public $registerScripts = true;
+    public $bindPlugin = true;
 
     /**
      * Initializes the widget.
@@ -71,6 +71,14 @@ class TbSelect2 extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $id = $this->resolveId($id);
+
+        if (!$this->asDropDownList && !isset($this->pluginOptions['data'])) {
+            $this->pluginOptions['data'] = $this->data;
+        }
+        if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
+        }
+
         echo TbHtml::openTag('div', array('class' => 'select2'));
         if ($this->hasModel()) {
             if ($this->asDropDownList) {
@@ -86,15 +94,18 @@ class TbSelect2 extends CInputWidget
             }
         }
         echo '</div>';
-        if ($this->asDropDownList === false && !isset($this->options['data'])) {
-            $this->options['data'] = $this->data;
-        }
-        if ($this->registerScripts) {
-            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+
+        if ($this->assetPath !== false) {
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('/select2.css');
             $this->registerScriptFile('/select2.js', CClientScript::POS_HEAD);
-            $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').select2({$options});");
+            if ($this->bindPlugin) {
+                $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
+                $this->getClientScript()->registerScript(
+                    __CLASS__ . '#' . $id,
+                    "jQuery('#{$id}').select2({$options});"
+                );
+            }
         }
     }
 

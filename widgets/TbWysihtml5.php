@@ -31,9 +31,9 @@ class TbWysihtml5 extends CInputWidget
     public $height = 300;
 
     /**
-     * @var array initial options that should be passed to the plugin.
+     * @var array options that are passed to the plugin.
      */
-    public $options = array();
+    public $pluginOptions = array();
 
     /**
      * @var string path to widget assets.
@@ -41,9 +41,9 @@ class TbWysihtml5 extends CInputWidget
     public $assetPath;
 
     /**
-     * @var bool whether to register scripts through the client script component.
+     * @var bool whether to bind the plugin to the associated dom element.
      */
-    public $registerScripts = true;
+    public $bindPlugin = true;
 
     /**
      * Initializes the widget.
@@ -66,23 +66,27 @@ class TbWysihtml5 extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $this->resolveId($id);
-        if (isset($this->htmlOptions['name'])) {
-            $name = $this->htmlOptions['name'];
+
+        if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
         }
+
         if ($this->hasModel()) {
             echo CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
         } else {
             echo CHtml::textArea($name, $this->value, $this->htmlOptions);
         }
 
-        if ($this->registerScripts) {
-            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+        if ($this->assetPath !== false) {
             $cs = $this->getClientScript();
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('dist/bootstrap-wysihtml5-0.0.2.css');
             $this->registerScriptFile('lib/js/wysihtml5-0.3.0.js', CClientScript::POS_HEAD);
             $this->registerScriptFile('dist/bootstrap-wysihtml5-0.0.2.min.js', CClientScript::POS_HEAD);
-            $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').wysihtml5({$options});");
+            if ($this->bindPlugin) {
+                $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
+                $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').wysihtml5({$options});");
+            }
         }
     }
 }

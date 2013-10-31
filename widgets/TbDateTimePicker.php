@@ -21,9 +21,9 @@
 class TbDateTimePicker extends CInputWidget
 {
     /**
-     * @var array initial options that should be passed to the plugin.
+     * @var array options that are passed to the plugin.
      */
-    public $options = array();
+    public $pluginOptions = array();
 
     /**
      * @var string path to widget assets.
@@ -31,9 +31,9 @@ class TbDateTimePicker extends CInputWidget
     public $assetPath;
 
     /**
-     * @var bool whether to register scripts through the client script component.
+     * @var bool whether to bind the plugin to the associated dom element.
      */
-    public $registerScripts = true;
+    public $bindPlugin = true;
 
     /**
      * Initializes the widget.
@@ -56,21 +56,30 @@ class TbDateTimePicker extends CInputWidget
         list($name, $id) = $this->resolveNameID();
         $id = $this->resolveId($id);
 
+        if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
+        }
+
         if ($this->hasModel()) {
             echo TbHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
         } else {
             echo TbHtml::textField($name, $this->value, $this->htmlOptions);
         }
 
-        if ($this->registerScripts) {
-            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+        if ($this->assetPath !== false) {
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('/css/datetimepicker.css');
             $this->registerScriptFile(
                 '/js/' . $this->resolveScriptVersion('bootstrap-datetimepicker.js'),
                 CClientScript::POS_HEAD
             );
-            $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').datetimepicker({$options});");
+            if ($this->bindPlugin) {
+                $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
+                $this->getClientScript()->registerScript(
+                    __CLASS__ . '#' . $id,
+                    "jQuery('#{$id}').datetimepicker({$options});"
+                );
+            }
         }
     }
 }
