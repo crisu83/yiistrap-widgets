@@ -46,6 +46,11 @@ class TbJqueryFileUpload extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register scripts through the client script component.
+     */
+    public $registerScripts = true;
+
+    /**
      * Initializes the widget.
      */
     public function init()
@@ -80,20 +85,23 @@ class TbJqueryFileUpload extends CInputWidget
         }
         echo TbHtml::tag('span', $this->buttonOptions, $this->label . ' ' . $input);
         $this->options['url'] = $this->url;
-        $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
-        $cs = $this->getClientScript();
-        $cs->registerCoreScript('jquery');
-        $this->publishAssets($this->assetPath);
-        $this->registerCssFile('css/jquery.fileupload-ui.css');
-        $this->registerScriptFile('js/vendor/jquery.ui.widget.js', CClientScript::POS_HEAD);
-        $this->registerScriptFile('js/jquery.iframe-transport.js', CClientScript::POS_HEAD);
-        $this->registerScriptFile('js/jquery.fileupload.js', CClientScript::POS_HEAD);
-        $script = <<<EOD
-jQuery('#{$id}')
-    .fileupload({$options})
-    .prop('disabled', !jQuery.support.fileInput)
-    .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
+
+        if ($this->registerScripts) {
+            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+            $cs = $this->getClientScript();
+            $cs->registerCoreScript('jquery');
+            $this->publishAssets($this->assetPath);
+            $this->registerCssFile('css/jquery.fileupload-ui.css');
+            $this->registerScriptFile('js/vendor/jquery.ui.widget.js', CClientScript::POS_HEAD);
+            $this->registerScriptFile('js/jquery.iframe-transport.js', CClientScript::POS_HEAD);
+            $this->registerScriptFile('js/jquery.fileupload.js', CClientScript::POS_HEAD);
+            $script = <<<EOD
+    jQuery('#{$id}')
+        .fileupload({$options})
+        .prop('disabled', !jQuery.support.fileInput)
+        .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
 EOD;
-        $cs->registerScript(__CLASS__ . '#' . $id, $script);
+            $cs->registerScript(__CLASS__ . '#' . $id, $script);
+        }
     }
 } 
