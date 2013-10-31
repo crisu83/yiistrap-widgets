@@ -41,6 +41,11 @@ class TbWysihtml5 extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register scripts through the client script component.
+     */
+    public $registerScripts = true;
+
+    /**
      * Initializes the widget.
      */
     public function init()
@@ -69,12 +74,15 @@ class TbWysihtml5 extends CInputWidget
         } else {
             echo CHtml::textArea($name, $this->value, $this->htmlOptions);
         }
-        $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
-        $cs = $this->getClientScript();
-        $this->publishAssets($this->assetPath);
-        $this->registerCssFile('dist/bootstrap-wysihtml5-0.0.2.css');
-        $this->registerScriptFile('lib/js/wysihtml5-0.3.0.js', CClientScript::POS_HEAD);
-        $this->registerScriptFile('dist/bootstrap-wysihtml5-0.0.2.min.js', CClientScript::POS_HEAD);
-        $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').wysihtml5({$options});");
+
+        if ($this->registerScripts) {
+            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+            $cs = $this->getClientScript();
+            $this->publishAssets($this->assetPath);
+            $this->registerCssFile('dist/bootstrap-wysihtml5-0.0.2.css');
+            $this->registerScriptFile('lib/js/wysihtml5-0.3.0.js', CClientScript::POS_HEAD);
+            $this->registerScriptFile('dist/bootstrap-wysihtml5-0.0.2.min.js', CClientScript::POS_HEAD);
+            $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').wysihtml5({$options});");
+        }
     }
 }

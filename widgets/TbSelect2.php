@@ -41,6 +41,11 @@ class TbSelect2 extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register scripts through the client script component.
+     */
+    public $registerScripts = true;
+
+    /**
      * Initializes the widget.
      */
     public function init()
@@ -65,7 +70,7 @@ class TbSelect2 extends CInputWidget
     public function run()
     {
         list($name, $id) = $this->resolveNameID();
-        $id = $this->resolveId();
+        $id = $this->resolveId($id);
         echo TbHtml::openTag('div', array('class' => 'select2'));
         if ($this->hasModel()) {
             if ($this->asDropDownList) {
@@ -84,11 +89,13 @@ class TbSelect2 extends CInputWidget
         if ($this->asDropDownList === false && !isset($this->options['data'])) {
             $this->options['data'] = $this->data;
         }
-        $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
-        $this->publishAssets($this->assetPath);
-        $this->registerCssFile('/select2.css');
-        $this->registerScriptFile('/select2.js', CClientScript::POS_HEAD);
-        $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').select2({$options});");
+        if ($this->registerScripts) {
+            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+            $this->publishAssets($this->assetPath);
+            $this->registerCssFile('/select2.css');
+            $this->registerScriptFile('/select2.js', CClientScript::POS_HEAD);
+            $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').select2({$options});");
+        }
     }
 
     /**

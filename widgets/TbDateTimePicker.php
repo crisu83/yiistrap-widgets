@@ -31,6 +31,11 @@ class TbDateTimePicker extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register scripts through the client script component.
+     */
+    public $registerScripts = true;
+
+    /**
      * Initializes the widget.
      */
     public function init()
@@ -49,7 +54,7 @@ class TbDateTimePicker extends CInputWidget
     public function run()
     {
         list($name, $id) = $this->resolveNameID();
-        $id = $this->resolveId();
+        $id = $this->resolveId($id);
 
         if ($this->hasModel()) {
             echo TbHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
@@ -57,13 +62,15 @@ class TbDateTimePicker extends CInputWidget
             echo TbHtml::textField($name, $this->value, $this->htmlOptions);
         }
 
-        $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
-        $this->publishAssets($this->assetPath);
-        $this->registerCssFile('/css/datetimepicker.css');
-        $this->registerScriptFile(
-            '/js/' . $this->resolveScriptVersion('bootstrap-datetimepicker.js'),
-            CClientScript::POS_HEAD
-        );
-        $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').datetimepicker({$options});");
+        if ($this->registerScripts) {
+            $options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
+            $this->publishAssets($this->assetPath);
+            $this->registerCssFile('/css/datetimepicker.css');
+            $this->registerScriptFile(
+                '/js/' . $this->resolveScriptVersion('bootstrap-datetimepicker.js'),
+                CClientScript::POS_HEAD
+            );
+            $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').datetimepicker({$options});");
+        }
     }
 }
