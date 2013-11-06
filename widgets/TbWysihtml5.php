@@ -41,6 +41,11 @@ class TbWysihtml5 extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register the associated JavaScript script files.
+     */
+    public $registerJs = true;
+
+    /**
      * @var bool whether to bind the plugin to the associated dom element.
      */
     public $bindPlugin = true;
@@ -78,15 +83,22 @@ class TbWysihtml5 extends CInputWidget
         }
 
         if ($this->assetPath !== false) {
-            $cs = $this->getClientScript();
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('dist/bootstrap-wysihtml5-0.0.2.css');
-            $this->registerScriptFile('lib/js/wysihtml5-0.3.0.js', CClientScript::POS_HEAD);
-            $this->registerScriptFile('dist/bootstrap-wysihtml5-0.0.2.min.js', CClientScript::POS_HEAD);
-            if ($this->bindPlugin) {
-                $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
-                $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').wysihtml5({$options});");
+
+            if ($this->registerJs) {
+                $this->registerScriptFile('lib/js/wysihtml5-0.3.0.js', CClientScript::POS_END);
+                $this->registerScriptFile('dist/bootstrap-wysihtml5-0.0.2.min.js', CClientScript::POS_END);
             }
+        }
+
+        if ($this->bindPlugin) {
+            $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
+            $this->getClientScript()->registerScript(
+                __CLASS__ . '#' . $id,
+                "jQuery('#{$id}').wysihtml5({$options});",
+                CClientScript::POS_END
+            );
         }
     }
 }

@@ -31,6 +31,11 @@ class TbDateTimePicker extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register the associated JavaScript script files.
+     */
+    public $registerJs = true;
+
+    /**
      * @var bool whether to bind the plugin to the associated dom element.
      */
     public $bindPlugin = true;
@@ -69,17 +74,22 @@ class TbDateTimePicker extends CInputWidget
         if ($this->assetPath !== false) {
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('/css/datetimepicker.css');
-            $this->registerScriptFile(
-                '/js/' . $this->resolveScriptVersion('bootstrap-datetimepicker.js'),
-                CClientScript::POS_HEAD
-            );
-            if ($this->bindPlugin) {
-                $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
-                $this->getClientScript()->registerScript(
-                    __CLASS__ . '#' . $id,
-                    "jQuery('#{$id}').datetimepicker({$options});"
+
+            if ($this->registerJs) {
+                $this->registerScriptFile(
+                    '/js/' . $this->resolveScriptVersion('bootstrap-datetimepicker.js'),
+                    CClientScript::POS_END
                 );
             }
+        }
+
+        if ($this->bindPlugin) {
+            $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
+            $this->getClientScript()->registerScript(
+                __CLASS__ . '#' . $id,
+                "jQuery('#{$id}').datetimepicker({$options});",
+                CClientScript::POS_END
+            );
         }
     }
 }
