@@ -46,6 +46,11 @@ class TbJqueryFileUpload extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register the associated JavaScript script files.
+     */
+    public $registerJs = true;
+
+    /**
      * @var bool whether to bind the plugin to the associated dom element.
      */
     public $bindPlugin = true;
@@ -92,24 +97,26 @@ class TbJqueryFileUpload extends CInputWidget
         echo TbHtml::tag('span', $this->buttonOptions, $this->label . ' ' . $input);
 
         if ($this->assetPath !== false) {
-            $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
-            $cs = $this->getClientScript();
-            $cs->registerCoreScript('jquery');
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('css/jquery.fileupload-ui.css');
-            $this->registerScriptFile('js/vendor/jquery.ui.widget.js', CClientScript::POS_HEAD);
-            $this->registerScriptFile('js/jquery.iframe-transport.js', CClientScript::POS_HEAD);
-            $this->registerScriptFile('js/jquery.fileupload.js', CClientScript::POS_HEAD);
 
-            if ($this->bindPlugin) {
-                $script = <<<EOD
+            if ($this->registerJs) {
+                $this->getClientScript()->registerCoreScript('jquery');
+                $this->registerScriptFile('js/vendor/jquery.ui.widget.js', CClientScript::POS_END);
+                $this->registerScriptFile('js/jquery.iframe-transport.js', CClientScript::POS_END);
+                $this->registerScriptFile('js/jquery.fileupload.js', CClientScript::POS_END);
+            }
+        }
+
+        if ($this->bindPlugin) {
+            $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
+            $script = <<<EOD
 jQuery('#{$id}')
     .fileupload({$options})
     .prop('disabled', !jQuery.support.fileInput)
     .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
 EOD;
-                $cs->registerScript(__CLASS__ . '#' . $id, $script);
-            }
+            $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, $script, CClientScript::POS_END);
         }
     }
 } 

@@ -41,6 +41,11 @@ class TbSelect2 extends CInputWidget
     public $assetPath;
 
     /**
+     * @var bool whether to register the associated script files.
+     */
+    public $registerJs = true;
+
+    /**
      * @var bool whether to bind the plugin to the associated dom element.
      */
     public $bindPlugin = true;
@@ -98,14 +103,19 @@ class TbSelect2 extends CInputWidget
         if ($this->assetPath !== false) {
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('/select2.css');
-            $this->registerScriptFile('/select2.js', CClientScript::POS_HEAD);
-            if ($this->bindPlugin) {
-                $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
-                $this->getClientScript()->registerScript(
-                    __CLASS__ . '#' . $id,
-                    "jQuery('#{$id}').select2({$options});"
-                );
+
+            if ($this->registerJs) {
+                $this->registerScriptFile('/select2.js', CClientScript::POS_END);
             }
+        }
+
+        if ($this->bindPlugin) {
+            $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
+            $this->getClientScript()->registerScript(
+                __CLASS__ . '#' . $id,
+                "jQuery('#{$id}').select2({$options});",
+                CClientScript::POS_END
+            );
         }
     }
 
