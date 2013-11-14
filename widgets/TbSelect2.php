@@ -61,12 +61,12 @@ class TbSelect2 extends CInputWidget
         if (!isset($this->assetPath)) {
             $this->assetPath = Yii::getPathOfAlias('vendor.ivaynberg.select2');
         }
+        if (!$this->asDropDownList && !isset($this->pluginOptions['data'])) {
+            $this->pluginOptions['data'] = $data = $this->normalizeData($this->data);
+        }
         if (!$this->bindPlugin) {
             $this->htmlOptions['data-plugin'] = 'select2';
             $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
-        }
-        if (!$this->asDropDownList && !isset($this->pluginOptions['data'])) {
-            $this->pluginOptions['data'] = $data = $this->normalizeData($this->data);
         }
         if (TbArray::popValue('block', $this->htmlOptions, false)) {
             TbHtml::addCssClass('input-block-level', $this->htmlOptions);
