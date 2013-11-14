@@ -81,6 +81,7 @@ class TbSelect2 extends CInputWidget
             $this->pluginOptions['data'] = $this->data;
         }
         if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin'] = 'select2';
             $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
         }
 

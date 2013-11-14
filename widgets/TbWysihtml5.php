@@ -73,6 +73,7 @@ class TbWysihtml5 extends CInputWidget
         $this->resolveId($id);
 
         if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin'] = 'wysihtml5';
             $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
         }
 
