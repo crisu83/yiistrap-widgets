@@ -69,11 +69,14 @@ class TbFileUpload extends CInputWidget
         if (!isset($this->assetPath)) {
             $this->assetPath = Yii::getPathOfAlias('vendor.blueimp.jquery-file-upload');
         }
+        if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin'] = 'fileupload';
+            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
+        }
         if (!isset($this->buttonOptions['class'])) {
             TbHtml::addCssClass('btn btn-primary', $this->htmlOptions);
         }
         TbHtml::addCssClass('fileinput-button', $this->buttonOptions);
-        TbArray::defaultValue('dataType', 'json', $this->pluginOptions);
     }
 
     /**
@@ -84,17 +87,12 @@ class TbFileUpload extends CInputWidget
         list($name, $id) = $this->resolveNameID();
         $this->resolveId($id);
 
-        $this->pluginOptions['url'] = $this->url;
-        if (!$this->bindPlugin) {
-            $this->htmlOptions['data-plugin'] = 'fileupload';
-            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
-        }
-
         if ($this->hasModel()) {
             $input = TbHtml::activeFileField($this->model, $this->attribute, $this->htmlOptions);
         } else {
             $input = TbHtml::fileField($name, $this->value, $this->htmlOptions);
         }
+
         echo TbHtml::tag('span', $this->buttonOptions, $this->label . ' ' . $input);
 
         if ($this->assetPath !== false) {
@@ -110,6 +108,8 @@ class TbFileUpload extends CInputWidget
         }
 
         if ($this->bindPlugin) {
+            $this->pluginOptions['url'] = $this->url;
+            TbArray::defaultValue('dataType', 'json', $this->pluginOptions);
             $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
             $script = <<<EOD
 jQuery('#{$id}')
@@ -117,7 +117,7 @@ jQuery('#{$id}')
     .prop('disabled', !jQuery.support.fileInput)
     .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
 EOD;
-            $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, $script, CClientScript::POS_END);
+            $this->getClientScript()->registerScript(__CLASS__ . '#' . $id, $script);
         }
     }
 } 

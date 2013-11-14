@@ -61,6 +61,10 @@ class TbWysihtml5 extends CInputWidget
         if (!isset($this->assetPath)) {
             $this->assetPath = Yii::getPathOfAlias('vendor.jhollingworth.bootstrap-wysihtml5');
         }
+        if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin'] = 'wysihtml5';
+            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
+        }
         TbHtml::addCssStyle('width: ' . $this->width . 'px; height: ' . $this->height . 'px;', $this->htmlOptions);
     }
 
@@ -71,11 +75,6 @@ class TbWysihtml5 extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $this->resolveId($id);
-
-        if (!$this->bindPlugin) {
-            $this->htmlOptions['data-plugin'] = 'wysihtml5';
-            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
-        }
 
         if ($this->hasModel()) {
             echo CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
@@ -97,8 +96,7 @@ class TbWysihtml5 extends CInputWidget
             $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
             $this->getClientScript()->registerScript(
                 __CLASS__ . '#' . $id,
-                "jQuery('#{$id}').wysihtml5({$options});",
-                CClientScript::POS_END
+                "jQuery('#{$id}').wysihtml5({$options});"
             );
         }
     }
