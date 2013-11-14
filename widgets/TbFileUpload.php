@@ -69,6 +69,7 @@ class TbFileUpload extends CInputWidget
         if (!isset($this->assetPath)) {
             $this->assetPath = Yii::getPathOfAlias('vendor.blueimp.jquery-file-upload');
         }
+        $this->pluginOptions['url'] = $this->url;
         if (!$this->bindPlugin) {
             $this->htmlOptions['data-plugin'] = 'fileupload';
             $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
@@ -108,7 +109,6 @@ class TbFileUpload extends CInputWidget
         }
 
         if ($this->bindPlugin) {
-            $this->pluginOptions['url'] = $this->url;
             TbArray::defaultValue('dataType', 'json', $this->pluginOptions);
             $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
             $script = <<<EOD
