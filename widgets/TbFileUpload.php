@@ -18,7 +18,7 @@
  * @method boolean registerEvents($selector, $events, $position = CClientScript::POS_END)
  * @method CClientScript getClientScript()
  */
-class TbJqueryFileUpload extends CInputWidget
+class TbFileUpload extends CInputWidget
 {
     /**
      * @var string the button label text.
@@ -86,6 +86,7 @@ class TbJqueryFileUpload extends CInputWidget
 
         $this->pluginOptions['url'] = $this->url;
         if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin'] = 'fileupload';
             $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
         }
 

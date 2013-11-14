@@ -62,6 +62,7 @@ class TbDateTimePicker extends CInputWidget
         $id = $this->resolveId($id);
 
         if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin'] = 'datetimepicker';
             $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
         }
 
