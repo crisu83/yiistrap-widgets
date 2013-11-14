@@ -58,11 +58,15 @@ class TbSelect2 extends CInputWidget
         parent::init();
         Yii::import('bootstrap.behaviors.TbWidget');
         $this->attachBehavior('tbWidget', new TbWidget);
-        if ($this->asDropDownList === false) {
-            $this->data = $this->normalizeData($this->data);
-        }
         if (!isset($this->assetPath)) {
             $this->assetPath = Yii::getPathOfAlias('vendor.ivaynberg.select2');
+        }
+        if (!$this->bindPlugin) {
+            $this->htmlOptions['data-plugin'] = 'select2';
+            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
+        }
+        if (!$this->asDropDownList && !isset($this->pluginOptions['data'])) {
+            $this->pluginOptions['data'] = $data = $this->normalizeData($this->data);
         }
         if (TbArray::popValue('block', $this->htmlOptions, false)) {
             TbHtml::addCssClass('input-block-level', $this->htmlOptions);
@@ -76,14 +80,6 @@ class TbSelect2 extends CInputWidget
     {
         list($name, $id) = $this->resolveNameID();
         $id = $this->resolveId($id);
-
-        if (!$this->asDropDownList && !isset($this->pluginOptions['data'])) {
-            $this->pluginOptions['data'] = $this->data;
-        }
-        if (!$this->bindPlugin) {
-            $this->htmlOptions['data-plugin'] = 'select2';
-            $this->htmlOptions['data-plugin-options'] = CJSON::encode($this->pluginOptions);
-        }
 
         echo TbHtml::openTag('div', array('class' => 'select2'));
         if ($this->hasModel()) {
@@ -114,8 +110,7 @@ class TbSelect2 extends CInputWidget
             $options = !empty($this->pluginOptions) ? CJavaScript::encode($this->pluginOptions) : '';
             $this->getClientScript()->registerScript(
                 __CLASS__ . '#' . $id,
-                "jQuery('#{$id}').select2({$options});",
-                CClientScript::POS_END
+                "jQuery('#{$id}').select2({$options});"
             );
         }
     }
