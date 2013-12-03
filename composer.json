@@ -48,15 +48,15 @@
             "type": "package",
             "package": {
                 "name": "smalot/bootstrap-datetimepicker",
-                "version": "dev-master",
+                "version": "2.2.0",
                 "dist": {
-                    "url": "https://github.com/smalot/bootstrap-datetimepicker/archive/master.zip",
+                    "url": "https://github.com/smalot/bootstrap-datetimepicker/archive/2.2.0.zip",
                     "type": "zip"
                 },
                 "source": {
                     "url": "https://github.com/smalot/bootstrap-datetimepicker",
                     "type": "git",
-                    "reference": "branches/master"
+                    "reference": "tags/2.2.0"
                 }
             }
         },
@@ -86,7 +86,7 @@
         "blueimp/jquery-file-upload": "8.8.5",
         "ivaynberg/select2": "3.4.3",
         "jhollingworth/bootstrap-wysihtml5": "dev-master",
-        "smalot/bootstrap-datetimepicker": "dev-master"
+        "smalot/bootstrap-datetimepicker": "2.2.0"
     },
     "minimum-stability": "dev"
 }
