@@ -73,7 +73,7 @@ class TbDateTimePicker extends CInputWidget
 
         if ($this->assetPath !== false) {
             $this->publishAssets($this->assetPath);
-            $this->registerCssFile('/css/datetimepicker.css');
+            $this->registerCssFile('/css/bootstrap-datetimepicker.css');
 
             if ($this->registerJs) {
                 $this->registerScriptFile(
