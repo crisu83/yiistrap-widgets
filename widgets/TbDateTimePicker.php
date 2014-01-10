@@ -23,7 +23,7 @@ class TbDateTimePicker extends CInputWidget
     /**
      * @var string locale to use.
      */
-    public $locale = null;
+    public $locale;
 
     /**
      * @var array options that are passed to the plugin.
@@ -53,6 +53,9 @@ class TbDateTimePicker extends CInputWidget
         parent::init();
         Yii::import('bootstrap.behaviors.TbWidget');
         $this->attachBehavior('tbWidget', new TbWidget);
+        if (isset($this->locale)) {
+            $this->pluginOptions['language'] = $this->locale;
+        }
         if (!isset($this->assetPath)) {
             $this->assetPath = Yii::getPathOfAlias('vendor.smalot.bootstrap-datetimepicker');
         }
@@ -80,16 +83,19 @@ class TbDateTimePicker extends CInputWidget
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('/css/bootstrap-datetimepicker.css');
 
-            if ($this->locale !== null) {
-                $this->locale = str_replace('_', '-', $this->locale);
-                $this->registerScriptFile('/js/locales/bootstrap-datetimepicker.' . $this->locale . '.js');
-            }
-
             if ($this->registerJs) {
                 $this->registerScriptFile(
                     '/js/' . $this->resolveScriptVersion('bootstrap-datetimepicker.js'),
                     CClientScript::POS_END
                 );
+
+                if (isset($this->locale)) {
+                    $this->locale = str_replace('_', '-', $this->locale);
+                    $this->registerScriptFile(
+                        "/js/locales/bootstrap-datetimepicker.{$this->locale}.js",
+                        CClientScript::POS_END
+                    );
+                }
             }
         }
 
