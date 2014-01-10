@@ -21,6 +21,11 @@
 class TbDateTimePicker extends CInputWidget
 {
     /**
+     * @var string locale to use.
+     */
+    public $locale = null;
+
+    /**
      * @var array options that are passed to the plugin.
      */
     public $pluginOptions = array();
@@ -74,6 +79,11 @@ class TbDateTimePicker extends CInputWidget
         if ($this->assetPath !== false) {
             $this->publishAssets($this->assetPath);
             $this->registerCssFile('/css/bootstrap-datetimepicker.css');
+
+            if ($this->locale !== null) {
+                $this->locale = str_replace('_', '-', $this->locale);
+                $this->registerScriptFile('/js/locales/bootstrap-datetimepicker.' . $this->locale . '.js');
+            }
 
             if ($this->registerJs) {
                 $this->registerScriptFile(
