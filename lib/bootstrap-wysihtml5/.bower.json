@@ -1,0 +1,19 @@
+{
+  "name": "bootstrap-wysihtml5",
+  "main": [
+    "src/bootstrap-wysihtml5.css",
+    "src/bootstrap-wysihtml5.js"
+  ],
+  "dependencies": {
+    "wysihtml5": "~0.3.0"
+  },
+  "homepage": "https://github.com/jhollingworth/bootstrap-wysihtml5",
+  "_release": "283bb8f859",
+  "_resolution": {
+    "type": "commit",
+    "commit": "283bb8f859977ac1aafb09bee715a1190f8cfd1b"
+  },
+  "_source": "git://github.com/jhollingworth/bootstrap-wysihtml5.git",
+  "_target": "283bb8f859977ac1aafb09bee715a1190f8cfd1b",
+  "_originalSource": "bootstrap-wysihtml5"
+}

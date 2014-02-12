@@ -59,7 +59,7 @@ class TbSelect2 extends CInputWidget
         Yii::import('bootstrap.behaviors.TbWidget');
         $this->attachBehavior('tbWidget', new TbWidget);
         if (!isset($this->assetPath)) {
-            $this->assetPath = Yii::getPathOfAlias('vendor.ivaynberg.select2');
+            $this->assetPath = Yii::getPathOfAlias('lib.select2');
         }
         if (!$this->asDropDownList && !isset($this->pluginOptions['data'])) {
             $this->pluginOptions['data'] = $data = $this->normalizeData($this->data);

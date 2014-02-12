@@ -1,9 +1,5 @@
-# Composer files
-composer.phar
-vendor/*
-
-# releases
-releases/
-
-# project files
-.idea/*
+.idea
+lib/blueimp-*
+lib/jquery
+lib/wysihtml5
+vendor

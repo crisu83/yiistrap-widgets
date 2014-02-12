@@ -67,7 +67,7 @@ class TbFileUpload extends CInputWidget
         Yii::import('bootstrap.behaviors.TbWidget');
         $this->attachBehavior('tbWidget', new TbWidget);
         if (!isset($this->assetPath)) {
-            $this->assetPath = Yii::getPathOfAlias('vendor.blueimp.jquery-file-upload');
+            $this->assetPath = Yii::getPathOfAlias('lib.jquery-file-upload');
         }
         $this->pluginOptions['url'] = $this->url;
         if (!$this->bindPlugin) {
