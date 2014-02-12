@@ -59,7 +59,7 @@ class TbWysihtml5 extends CInputWidget
         Yii::import('bootstrap.behaviors.TbWidget');
         $this->attachBehavior('tbWidget', new TbWidget);
         if (!isset($this->assetPath)) {
-            $this->assetPath = Yii::getPathOfAlias('vendor.jhollingworth.bootstrap-wysihtml5');
+            $this->assetPath = Yii::getPathOfAlias('lib.bootstrap-wysihtml5');
         }
         if (!$this->bindPlugin) {
             $this->htmlOptions['data-plugin'] = 'wysihtml5';

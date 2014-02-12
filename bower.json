@@ -1,0 +1,10 @@
+{
+    "name": "yiistrap-widgets",
+    "dependencies": {
+        "bootstrap-modal": "git://github.com/jschr/bootstrap-modal#2.1.0",
+        "jquery-file-upload": "9.5.5",
+        "select2": "3.4.5",
+        "smalot-bootstrap-datetimepicker": "2.2.0",
+        "bootstrap-wysihtml5": "283bb8f859977ac1aafb09bee715a1190f8cfd1b"
+    }
+}

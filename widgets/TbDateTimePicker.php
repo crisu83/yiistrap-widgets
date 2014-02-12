@@ -57,7 +57,7 @@ class TbDateTimePicker extends CInputWidget
             $this->pluginOptions['language'] = $this->locale;
         }
         if (!isset($this->assetPath)) {
-            $this->assetPath = Yii::getPathOfAlias('vendor.smalot.bootstrap-datetimepicker');
+            $this->assetPath = Yii::getPathOfAlias('lib.smalot-bootstrap-datetimepicker');
         }
         if (!$this->bindPlugin) {
             $this->htmlOptions['data-plugin'] = 'datetimepicker';
